@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>六帽推演厅 · Six Hats Council</title>
+<style>
+:root {
+  --bg: #07090e;
+  --bg-dots: rgba(255, 255, 255, 0.035);
+  --surface: #0f121d;
+  --surface-card: rgba(18, 22, 36, 0.72);
+  --surface-hover: rgba(28, 35, 56, 0.85);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-sub: #64748b;
+  --primary: #6366f1;
+  --primary-light: #818cf8;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  /* 六顶帽子本色 */
+  --hat-blue: #3b82f6;
+  --hat-white: #cbd5e1;
+  --hat-green: #22c55e;
+  --hat-yellow: #eab308;
+  --hat-black: #6b7280;
+  --hat-red: #ef4444;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 50% -10%, rgba(99, 102, 241, 0.16) 0%, transparent 55%),
+    radial-gradient(circle at 12% 30%, rgba(34, 197, 94, 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 88% 40%, rgba(239, 68, 68, 0.05) 0%, transparent 45%),
+    radial-gradient(var(--bg-dots) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 24px 24px;
+  background-attachment: fixed;
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.container { max-width: 1080px; margin: 0 auto; padding: 0 20px 100px; }
+
+/* ===== 顶部导航 ===== */
+.navbar {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  background: rgba(7, 9, 14, 0.84);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28px;
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-icon {
+  width: 38px; height: 38px; border-radius: 11px;
+  background: conic-gradient(from 210deg, #3b82f6, #22c55e, #eab308, #ef4444, #6b7280, #cbd5e1, #3b82f6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; border: 1px solid rgba(255,255,255,0.28);
+  box-shadow: 0 0 22px rgba(99,102,241,0.4);
+}
+.brand-title {
+  font-size: 18px; font-weight: 800; letter-spacing: -0.03em;
+  background: linear-gradient(to right, #ffffff 35%, #c7d2fe 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.brand-sub { font-size: 11px; color: var(--text-sub); letter-spacing: 0.04em; }
+.env-badge {
+  font-size: 12px; padding: 5px 12px; border-radius: 999px;
+  background: rgba(99,102,241,0.12); color: var(--primary-light);
+  border: 1px solid rgba(99,102,241,0.3); white-space: nowrap;
+}
+
+/* ===== 卡片 ===== */
+.card {
+  background: var(--surface-card); backdrop-filter: blur(14px);
+  border: 1px solid var(--border); border-radius: 16px;
+  padding: 22px; margin-bottom: 18px;
+  box-shadow: 0 10px 34px rgba(0,0,0,0.22);
+}
+.card-title {
+  font-size: 15px; font-weight: 700; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ===== 输入区 ===== */
+.label { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; display: block; }
+textarea {
+  width: 100%; background: rgba(0,0,0,0.28);
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px; color: var(--text-main); font-size: 14px;
+  font-family: inherit; resize: vertical; outline: none; min-height: 88px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.13); }
+textarea::placeholder { color: var(--text-sub); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 16px; }
+.chip {
+  font-size: 12px; padding: 6px 13px; border-radius: 999px; cursor: pointer;
+  background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+  color: var(--text-muted); transition: all 0.18s;
+}
+.chip:hover { background: rgba(99,102,241,0.16); color: #c7d2fe; border-color: rgba(129,140,248,0.45); transform: translateY(-1px); }
+
+/* ===== 按钮 ===== */
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+button {
+  background: var(--primary); color: #fff; border: none;
+  border-radius: 11px; padding: 11px 22px; font-size: 14px; font-weight: 600;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+  font-family: inherit; transition: all 0.2s;
+}
+button:hover:not(:disabled) { background: #4f46e5; box-shadow: 0 0 18px rgba(99,102,241,0.42); transform: translateY(-1px); }
+button:disabled { opacity: 0.42; cursor: not-allowed; }
+.btn-ghost { background: rgba(255,255,255,0.06); color: var(--text-main); border: 1px solid var(--border); }
+.btn-ghost:hover:not(:disabled) { background: rgba(255,255,255,0.12); box-shadow: none; }
+.btn-danger { background: rgba(239,68,68,0.85); }
+.btn-danger:hover:not(:disabled) { background: var(--danger); box-shadow: 0 0 18px rgba(239,68,68,0.4); }
+.btn-sm { padding: 7px 14px; font-size: 12.5px; border-radius: 9px; }
+
+/* ===== 帽子进度灯 ===== */
+.pipeline { display: none; margin-top: 20px; padding-top: 18px; border-top: 1px dashed var(--border); }
+.pipeline.show { display: block; }
+.pipe-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+.pipe-status { font-size: 13px; color: var(--text-muted); }
+.timer {
+  font-family: ui-monospace, "SF Mono", Consolas, monospace;
+  font-size: 13px; font-weight: 700; color: var(--warning);
+  background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25);
+  padding: 3px 11px; border-radius: 999px;
+}
+
+.hat-lamp-row { display: flex; gap: 8px; }
+.hat-lamp {
+  flex: 1; min-width: 0; border-radius: 11px; padding: 11px 6px;
+  text-align: center; background: rgba(255,255,255,0.035);
+  border: 1px solid var(--border); transition: all 0.32s cubic-bezier(0.16,1,0.3,1);
+  position: relative; overflow: hidden;
+}
+.hat-lamp .hl-icon { font-size: 19px; line-height: 1.2; display: block; filter: grayscale(1); opacity: 0.42; transition: all 0.3s; }
+.hat-lamp .hl-name { font-size: 11px; color: var(--text-sub); margin-top: 3px; font-weight: 600; transition: color 0.3s; }
+
+.hat-lamp.active { background: rgba(255,255,255,0.07); border-color: var(--hat-color); box-shadow: 0 0 20px -3px var(--hat-color); transform: translateY(-3px) scale(1.03); }
+.hat-lamp.active .hl-icon { filter: none; opacity: 1; transform: scale(1.16); }
+.hat-lamp.active .hl-name { color: var(--hat-color); }
+
+.hat-lamp.done { border-color: rgba(255,255,255,0.13); background: rgba(255,255,255,0.05); }
+.hat-lamp.done .hl-icon { filter: none; opacity: 0.78; }
+.hat-lamp.done .hl-name { color: var(--text-muted); }
+.hat-lamp.done::after {
+  content: "✓"; position: absolute; top: 4px; right: 6px;
+  font-size: 10px; color: var(--success); font-weight: 700;
+}
+.hat-lamp.skipped { opacity: 0.3; }
+
+/* ===== 结果卡片 ===== */
+.results { margin-top: 22px; }
+.hat-card {
+  border-radius: 14px; padding: 18px 20px; margin-bottom: 14px;
+  background: rgba(255,255,255,0.028);
+  border: 1px solid var(--border); border-left: 3px solid var(--hat-color);
+  animation: slideUp 0.42s cubic-bezier(0.16,1,0.3,1);
+}
+@keyframes slideUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+.hat-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.hat-card-icon { font-size: 19px; }
+.hat-card-name { font-size: 14.5px; font-weight: 700; color: var(--hat-color); }
+.hat-card-role { font-size: 11.5px; color: var(--text-sub); }
+.hat-card-body { font-size: 13.8px; color: #dbe2ef; }
+.hat-card-body p { margin-bottom: 9px; }
+.hat-card-body p:last-child { margin-bottom: 0; }
+.hat-card-body strong { color: #fff; font-weight: 700; }
+.hat-card-body h4 { font-size: 13.5px; color: var(--hat-color); margin: 13px 0 7px; font-weight: 700; }
+.hat-card-body h4:first-child { margin-top: 0; }
+.hat-card-body ul, .hat-card-body ol { margin: 7px 0 10px 20px; }
+.hat-card-body li { margin-bottom: 5px; }
+.hat-card-body code {
+  font-family: ui-monospace, Consolas, monospace; font-size: 12.5px;
+  background: rgba(0,0,0,0.42); padding: 1.5px 6px; border-radius: 5px; color: #a5b4fc;
+}
+.hat-card-body hr { border: none; border-top: 1px solid var(--border); margin: 13px 0; }
+
+/* 正在流式输出的卡片 */
+.hat-card.streaming { box-shadow: 0 0 0 1px var(--hat-color), 0 0 26px -8px var(--hat-color); }
+.cursor-blink {
+  display: inline-block; width: 7px; height: 15px; vertical-align: -2px;
+  background: var(--hat-color); margin-left: 3px; animation: blink 1s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* 蓝帽合成卡（重点强调） */
+.hat-card.is-synthesis {
+  background: linear-gradient(150deg, rgba(59,130,246,0.13), rgba(99,102,241,0.05));
+  border: 1px solid rgba(59,130,246,0.34); border-left: 3px solid var(--hat-blue);
+}
+
+/* ===== 空状态与加载 ===== */
+.empty {
+  text-align: center; padding: 46px 20px; color: var(--text-sub); font-size: 13.5px;
+}
+.empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.4; }
+
+.spinner {
+  width: 15px; height: 15px; border: 2px solid rgba(255,255,255,0.22);
+  border-top-color: #fff; border-radius: 50%; animation: spin 0.75s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== 历史记录 ===== */
+.history-item {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 11px 14px; border-radius: 10px; cursor: pointer;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  margin-bottom: 8px; transition: all 0.18s;
+}
+.history-item:hover { background: rgba(99,102,241,0.11); border-color: rgba(129,140,248,0.35); }
+.history-topic { font-size: 13.2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.history-time { font-size: 11px; color: var(--text-sub); white-space: nowrap; }
+
+.toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: rgba(18,22,36,0.97); border: 1px solid var(--border-strong);
+  color: var(--text-main); padding: 11px 22px; border-radius: 11px; font-size: 13.5px;
+  z-index: 999; opacity: 0; transition: all 0.32s cubic-bezier(0.16,1,0.3,1);
+  backdrop-filter: blur(14px); box-shadow: 0 12px 34px rgba(0,0,0,0.5);
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+.section-divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 30px 0 18px; color: var(--text-sub); font-size: 12px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.section-divider::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+@media (max-width: 720px) {
+  .hat-lamp .hl-name { font-size: 9.5px; }
+  .hat-lamp .hl-icon { font-size: 16px; }
+  .navbar { padding: 10px 16px; }
+  .container { padding: 0 14px 80px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="brand">
+    <div class="brand-icon">🎩</div>
+    <div>
+      <div class="brand-title">六帽推演厅</div>
+      <div class="brand-sub">SIX HATS COUNCIL · 平行思考引擎</div>
+    </div>
+  </div>
+  <div id="envBadge" class="env-badge">检测环境中…</div>
+</nav>
+
+<div class="container">
+
+  <!-- 输入区 -->
+  <div class="card">
+    <div class="card-title">🎯 待审议议题</div>
+    <label class="label">把你的决策难题交给六顶帽子，它们会依次从六个角度把它看透</label>
+    <textarea id="topicInput" placeholder="例：我们公司要不要把核心业务系统迁移到私有化部署的大模型上？"></textarea>
+
+    <div class="chips" id="templateChips"></div>
+
+    <div class="btn-row">
+      <button id="runBtn">
+        <span id="runBtnText">开始六帽推演</span>
+      </button>
+      <button id="cancelBtn" class="btn-danger" style="display:none;">终止推演</button>
+    </div>
+
+    <!-- 帽子进度灯 + 计时 -->
+    <div class="pipeline" id="pipeline">
+      <div class="pipe-head">
+        <span class="pipe-status" id="pipeStatus">准备中…</span>
+        <span class="timer" id="timer">0.0s</span>
+      </div>
+      <div class="hat-lamp-row" id="hatLamps"></div>
+    </div>
+  </div>
+
+  <!-- 结果区 -->
+  <div class="results" id="results"></div>
+
+  <!-- 历史记录 -->
+  <div id="historySection" style="display:none;">
+    <div class="section-divider">历史推演档案</div>
+    <div id="historyList"></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   六帽推演厅 · 单文件原生应用
+   架构要点：串行推进（规避 Cherry 并发上限 2）+ 双轨环境感知
+            + 自愈式 JSON 解析 + 防焦虑流水线
+   ============================================================ */
+
+/* ---------- 1. 环境检测（双轨防御） ---------- */
+const isCherry = typeof window !== 'undefined' && typeof window.cherry !== 'undefined' && window.cherry !== null;
+
+/* ---------- 2. 六顶帽子知识底座 ---------- */
+const HATS = {
+  blue:  { name: '蓝帽', en: 'Blue',   icon: '🧭', role: '流程控制与收束', color: 'var(--hat-blue)',   colorRaw: '#3b82f6',
+           directive: '你只负责组织思考流程、把控节奏、最后收束结论。你不贡献观点，只做调度与综合。' },
+  white: { name: '白帽', en: 'White',  icon: '⚪', role: '中立的事实与数据', color: 'var(--hat-white)', colorRaw: '#cbd5e1',
+           directive: '你只能陈述客观事实、数据、已验证的信息。严禁评价、严禁推测、严禁表达喜好。必须区分「已知事实」与「信息缺口」。' },
+  green: { name: '绿帽', en: 'Green',  icon: '🟢', role: '创意与可能性', color: 'var(--hat-green)', colorRaw: '#22c55e',
+           directive: '你只负责生产新点子、替代方案、反向做法、疯狂假设。严禁批评、严禁泼冷水、严禁说「这不可行」。' },
+  yellow:{ name: '黄帽', en: 'Yellow', icon: '🟡', role: '价值与机会', color: 'var(--hat-yellow)', colorRaw: '#eab308',
+           directive: '你只负责寻找价值、收益、可行性依据、最好的可能结果。乐观但必须有逻辑支撑，不许空喊口号。' },
+  black: { name: '黑帽', en: 'Black',  icon: '⚫', role: '风险与批判', color: 'var(--hat-black)',  colorRaw: '#6b7280',
+           directive: '你只负责指出风险、隐患、失败路径、为什么行不通。必须具体到「什么情况下会怎么崩」，严禁泛泛而谈。' },
+  red:   { name: '红帽', en: 'Red',    icon: '🔴', role: '情感与直觉', color: 'var(--hat-red)',    colorRaw: '#ef4444',
+           directive: '你只表达直觉、预感、情绪反应。严禁给出任何理由和论证——「我就是觉得不对劲」才是合格的回答。' }
+};
+
+/* 标准推进序（蓝帽开场 → 五帽 → 蓝帽收尾），可被蓝帽开局动态裁剪 */
+const DEFAULT_ORDER = ['white', 'green', 'yellow', 'black', 'red'];
+
+/* ---------- 3. 存储适配层 ---------- */
+const store = {
+  async get(key) {
+    try {
+      if (isCherry && window.cherry.storage) {
+        const r = await window.cherry.storage.get(key);
+        return r && r.value ? JSON.parse(r.value) : null;
+      }
+      const v = localStorage.getItem('shc_' + key);
+      return v ? JSON.parse(v) : null;
+    } catch (e) { console.warn('storage.get 失败', e); return null; }
+  },
+  async set(key, val) {
+    try {
+      const s = JSON.stringify(val);
+      if (isCherry && window.cherry.storage) { await window.cherry.storage.set(key, s); return; }
+      localStorage.setItem('shc_' + key, s);
+    } catch (e) { console.warn('storage.set 失败', e); }
+  }
+};
+
+/* ---------- 4. 自愈式松散 JSON 解析器 ---------- */
+function safeParseJSON(raw, fallback) {
+  if (!raw) return fallback;
+  try { return JSON.parse(raw); } catch (e) { /* 进入自愈流程 */ }
+  const m = String(raw).match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
+  if (m) {
+    let c = m[0];
+    c = c.replace(/```json/gi, '').replace(/```/g, '');
+    c = c.replace(/,\s*([\]}])/g, '$1');       // 去尾逗号
+    c = c.replace(/([{,]\s*)([A-Za-z_][\w]*)\s*:/g, '$1"$2":'); // 补裸键引号
+    try { return JSON.parse(c); } catch (e2) { console.warn('二级自愈仍失败', e2, c.slice(0, 200)); }
+  }
+  return fallback;
+}
+
+/* ---------- 5. 轻量 Markdown 渲染 ---------- */
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function renderMD(text) {
+  if (!text) return '';
+  let t = esc(text);
+  t = t.replace(/^###\s+(.*)$/gm, '<h4>$1</h4>');
+  t = t.replace(/^##\s+(.*)$/gm, '<h4>$1</h4>');
+  t = t.replace(/^#\s+(.*)$/gm, '<h4>$1</h4>');
+  t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
+  t = t.replace(/^\s*[-*]\s+(.*)$/gm, '<li>$1</li>');
+  t = t.replace(/^\s*\d+\.\s+(.*)$/gm, '<li>$1</li>');
+  t = t.replace(/(<li>[\s\S]*?<\/li>)(?!\s*<li>)/g, '<ul>$1</ul>');
+  t = t.replace(/^---+\s*$/gm, '<hr>');
+  t = t.split(/\n{2,}/).map(function (blk) {
+    blk = blk.trim();
+    if (!blk) return '';
+    if (/^<(h4|ul|hr|li)/.test(blk)) return blk;
+    return '<p>' + blk.replace(/\n/g, '<br>') + '</p>';
+  }).join('');
+  return t;
+}
+
+/* ---------- 6. 计时器 ---------- */
+let timerId = null, t0 = 0;
+function startTimer() {
+  t0 = Date.now();
+  const el = document.getElementById('timer');
+  timerId = setInterval(function () {
+    el.textContent = ((Date.now() - t0) / 1000).toFixed(1) + 's';
+  }, 100);
+}
+function stopTimer() { if (timerId) { clearInterval(timerId); timerId = null; } }
+
+/* ---------- 7. UI 工具 ---------- */
+function toast(msg, ms) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(function () { el.classList.remove('show'); }, ms || 2200);
+}
+
+function buildLamps(activeOrder) {
+  const row = document.getElementById('hatLamps');
+  row.innerHTML = '';
+  const seq = ['blue'].concat(activeOrder).concat(['blue']);
+  const seen = {};
+  seq.forEach(function (k, i) {
+    if (k === 'blue') {
+      const isOpening = i === 0;
+      const key = isOpening ? 'blue-open' : 'blue-close';
+      const el = document.createElement('div');
+      el.className = 'hat-lamp';
+      el.id = 'lamp-' + key;
+      el.style.setProperty('--hat-color', HATS.blue.colorRaw);
+      el.innerHTML = '<span class="hl-icon">' + HATS.blue.icon + '</span>' +
+                     '<div class="hl-name">' + (isOpening ? '蓝帽·开局' : '蓝帽·收束') + '</div>';
+      row.appendChild(el);
+      return;
+    }
+    if (seen[k]) return;
+    seen[k] = 1;
+    const h = HATS[k];
+    const el = document.createElement('div');
+    el.className = 'hat-lamp';
+    el.id = 'lamp-' + k;
+    el.style.setProperty('--hat-color', h.colorRaw);
+    el.innerHTML = '<span class="hl-icon">' + h.icon + '</span><div class="hl-name">' + h.name + '</div>';
+    row.appendChild(el);
+  });
+}
+
+function lampState(id, state) {
+  const el = document.getElementById('lamp-' + id);
+  if (!el) return;
+  el.classList.remove('active', 'done');
+  if (state) el.classList.add(state);
+}
+
+/* ---------- 8. 结果卡片 ---------- */
+let cardSeq = 0;
+function createHatCard(hatKey, opts) {
+  opts = opts || {};
+  const h = HATS[hatKey] || HATS.blue;
+  const wrap = document.getElementById('results');
+  const el = document.createElement('div');
+  el.className = 'hat-card' + (opts.synthesis ? ' is-synthesis' : '');
+  el.id = 'card-' + (opts.id || ('c' + (++cardSeq)));
+  el.style.setProperty('--hat-color', h.colorRaw);
+  el.innerHTML =
+    '<div class="hat-card-head">' +
+      '<span class="hat-card-icon">' + h.icon + '</span>' +
+      '<span class="hat-card-name">' + (opts.title || h.name) + '</span>' +
+      '<span class="hat-card-role">' + (opts.role || h.role) + '</span>' +
+    '</div>' +
+    '<div class="hat-card-body"></div>';
+  wrap.appendChild(el);
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  return el;
+}
+
+function setCardBody(cardEl, html, streaming) {
+  const body = cardEl.querySelector('.hat-card-body');
+  body.innerHTML = html + (streaming ? '<span class="cursor-blink"></span>' : '');
+}
+
+/* ---------- 9. 核心：单次 AI 调用（流式） ---------- */
+async function callAI(systemPrompt, userPrompt, callId, onDelta, runToken) {
+  if (!isCherry || !window.cherry.ai) {
+    // 浏览器仿真轨：逐字吐字，便于本地预览
+    const fake = '[离线仿真轨] ' + userPrompt.slice(0, 40) + ' …（此内容为本地模拟，需在 Cherry Studio 中运行才能获得真实推演）';
+    let acc = '';
+    for (let i = 0; i < fake.length; i++) {
+      if (runToken !== RUN_TOKEN) throw new Error('CANCELLED');
+      acc += fake[i];
+      onDelta(acc);
+      await new Promise(function (r) { setTimeout(r, 8); });
+    }
+    return acc;
+  }
+
+  const caps = await window.cherry.ai.getCapabilities({ model: 'default' });
+  if (!caps || caps.available === false) {
+    throw new Error('NO_MODEL');
+  }
+
+  let acc = '';
+  try {
+    await window.cherry.ai.chat(
+      { messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        model: 'default' },
+      { onChunk: function (t) { acc += t; onDelta(acc); }, callId: callId }
+    );
+  } catch (e) {
+    if (e && e.name === 'Cancelled') throw new Error('CANCELLED');
+    if (e && e.name === 'PermissionDenied') throw new Error('权限不足：请确认已授权 ai.chat');
+    if (e && e.name === 'RateLimited') throw new Error('调用过于频繁，请稍候重试');
+    if (e && e.name === 'Unavailable') throw new Error('模型暂不可用，请检查 Cherry 中的模型配置');
+    throw new Error((e && e.message) || '调用失败');
+  }
+  return acc;
+}
+
+/* ---------- 10. 蓝帽·开局：动态规划审议流程 ---------- */
+async function blueHatPlan(topic, runToken) {
+  const card = createHatCard('blue', { id: 'blue-open', title: '蓝帽 · 开局规划', role: '判定议题性质，编排审议流程' });
+  setCardBody(card, '<p style="color:var(--text-sub)">正在分析议题性质…</p>', true);
+
+  const sys = '你是六顶思考帽方法中的【蓝帽】，担任本次审议的主持人与流程设计师。\n' +
+    '你的职责不是回答议题，而是设计「该怎么审议这个议题」。\n' +
+    '可用帽子（蓝帽固定开启，不需你列出）：\n' +
+    '  white=白帽(事实数据) / green=绿帽(创意可能) / yellow=黄帽(价值机会) / black=黑帽(风险批判) / red=红帽(情感直觉)\n\n' +
+    '请分析议题性质，然后决定：\n' +
+    '1. 需要启用哪几顶帽子、按什么顺序（顺序即审议节奏，通常先事实、再创意、再看价值与风险、最后直觉）\n' +
+    '2. 每顶帽子针对「本议题」的具体切入点（必须具体到这个议题，不要写通用套话）\n' +
+    '3. 用一句话点破议题的本质矛盾\n\n' +
+    '严格只输出以下 JSON，不要任何解释、不要 Markdown 代码块标记：\n' +
+    '{"essence":"议题本质的一句话","plan":[{"hat":"white","focus":"本议题下白帽应聚焦的具体问题"},{"hat":"green","focus":"..."}]}';
+
+  let raw = '';
+  try {
+    raw = await callAI(sys, '待审议议题：' + topic, 'blue-plan', function (t) { raw = t; }, runToken);
+  } catch (e) {
+    if (e.message === 'CANCELLED') throw e;
+    // 规划失败不阻断主流程，退化为默认序
+    setCardBody(card, '<p>⚠️ 流程规划未能完成（' + esc(e.message) + '），已退化为标准六帽顺序推进。</p>', false);
+    return { essence: '', plan: DEFAULT_ORDER.map(function (k) { return { hat: k, focus: '' }; }) };
+  }
+
+  const parsed = safeParseJSON(raw, null);
+  let plan = (parsed && Array.isArray(parsed.plan)) ? parsed.plan : null;
+  const essence = (parsed && parsed.essence) ? parsed.essence : '';
+
+  // 校验与清洗：只保留合法帽子、去重、兜底默认序
+  if (plan) {
+    const seen = {};
+    plan = plan.filter(function (p) {
+      if (!p || !HATS[p.hat] || p.hat === 'blue' || seen[p.hat]) return false;
+      seen[p.hat] = 1; return true;
+    });
+  }
+  if (!plan || !plan.length) {
+    plan = DEFAULT_ORDER.map(function (k) { return { hat: k, focus: '' }; });
+  }
+
+  let html = '';
+  if (essence) html += '<p><strong>议题本质：</strong>' + esc(essence) + '</p>';
+  html += '<h4>审议编排（' + plan.length + ' 顶帽子）</h4><ul>';
+  plan.forEach(function (p, i) {
+    const h = HATS[p.hat];
+    html += '<li><strong style="color:' + h.colorRaw + '">' + (i + 1) + '. ' + h.name + '</strong>' +
+            (p.focus ? '：' + esc(p.focus) : '') + '</li>';
+  });
+  html += '</ul>';
+  setCardBody(card, html, false);
+  return { essence: essence, plan: plan };
+}
+
+/* ---------- 11. 单顶帽子推演 ---------- */
+async function runOneHat(hatKey, focus, topic, contextText, runToken) {
+  const h = HATS[hatKey];
+  lampState(hatKey, 'active');
+  document.getElementById('pipeStatus').textContent = '正在戴 ' + h.name + ' · ' + h.role + ' …';
+
+  const card = createHatCard(hatKey, {});
+  setCardBody(card, '<p style="color:var(--text-sub)">思考中…</p>', true);
+
+  const sys = '你是六顶思考帽方法中的【' + h.name + '】（' + h.role + '）。\n' +
+    '行为铁律：' + h.directive + '\n\n' +
+    '输出要求：\n' +
+    '- 用中文，Markdown 格式，控制在 250 字以内，宁精勿多\n' +
+    '- 用 `- ` 列要点，不要写开场白和总结寒暄\n' +
+    '- 不要重复前面帽子已经说过的内容，要有增量\n' +
+    '- 不要使用「作为' + h.name + '」这类自我指涉，直接给内容';
+
+  const user = '【待审议议题】\n' + topic + '\n\n' +
+    (focus ? '【蓝帽为你指定的切入点】\n' + focus + '\n\n' : '') +
+    (contextText ? '【前面各顶帽子已有的产出（请勿重复，只做增量）】\n' + contextText : '（你是第一顶开讲的帽子）');
+
+  let acc = '';
+  const out = await callAI(sys, user, 'hat-' + hatKey, function (t) {
+    acc = t; setCardBody(card, renderMD(t), true);
+  }, runToken);
+
+  setCardBody(card, renderMD(out), false);
+  card.classList.remove('streaming');
+  lampState(hatKey, 'done');
+  return out;
+}
+
+/* ---------- 12. 蓝帽·收束：合成最终结论 ---------- */
+async function blueHatSynthesize(topic, essence, allOutputs, runToken) {
+  lampState('blue-close', 'active');
+  document.getElementById('pipeStatus').textContent = '蓝帽正在收束全场、合成最终结论…';
+
+  const card = createHatCard('blue', { id: 'blue-close', synthesis: true,
+    title: '蓝帽 · 审议结论', role: '综合全场，给出决策建议' });
+  setCardBody(card, '<p style="color:var(--text-sub)">综合中…</p>', true);
+
+  const context = Object.keys(allOutputs).map(function (k) {
+    return '【' + HATS[k].name + '】\n' + allOutputs[k];
+  }).join('\n\n');
+
+  const sys = '你是六顶思考帽方法中的【蓝帽】，负责收束整场审议。\n' +
+    '你不是在重复各顶帽子的发言，而是做综合、找矛盾、给判断。\n\n' +
+    '必须严格按以下 Markdown 结构输出，标题原样保留：\n' +
+    '## 议题本质\n（一到两句话点破）\n' +
+    '## 事实底座\n（白帽确证的关键事实，未知项单独标出）\n' +
+    '## 价值与机会\n（黄帽里最值得抓住的）\n' +
+    '## 风险与红线\n（黑帽里最致命的，按严重度排序）\n' +
+    '## 创意与替代方案\n（绿帽里最有价值的几条）\n' +
+    '## 直觉信号\n（红帽透露的集体情绪，一句话）\n' +
+    '## 决策建议\n（明确给出：建议推进 / 建议暂缓 / 建议改方案，并说明关键前提条件与下一步动作）\n\n' +
+    '要求：观点要收敛，不要和稀泥；有矛盾之处要明确指出；总长不超过 700 字。';
+
+  const user = '【待审议议题】\n' + topic + '\n\n' +
+    (essence ? '【蓝帽开局判定的议题本质】\n' + essence + '\n\n' : '') +
+    '【各顶帽子产出】\n' + context;
+
+  let acc = '';
+  const out = await callAI(sys, user, 'blue-close', function (t) {
+    acc = t; setCardBody(card, renderMD(t), true);
+  }, runToken);
+
+  setCardBody(card, renderMD(out), false);
+  lampState('blue-close', 'done');
+  return out;
+}
+
+/* ---------- 13. 主流程编排 ---------- */
+let RUN_TOKEN = 0;
+let LAST_RECORD = null;
+
+async function runCouncil() {
+  const topic = document.getElementById('topicInput').value.trim();
+  if (!topic) { toast('请先输入待审议的议题'); return; }
+
+  RUN_TOKEN++;
+  const myToken = RUN_TOKEN;
+
+  // UI 复位
+  document.getElementById('results').innerHTML = '';
+  document.getElementById('runBtn').disabled = true;
+  document.getElementById('runBtnText').innerHTML = '<span class="spinner"></span> 推演中…';
+  document.getElementById('cancelBtn').style.display = 'inline-flex';
+  document.getElementById('pipeline').classList.add('show');
+  buildLamps(DEFAULT_ORDER);
+  Object.keys(HATS).forEach(function (k) { lampState(k, null); });
+  lampState('blue-close', null);
+  startTimer();
+
+  const record = { topic: topic, time: new Date().toISOString(), essence: '', outputs: {}, synthesis: '' };
+
+  try {
+    /* ① 蓝帽开局 */
+    lampState('blue-open', 'active');
+    document.getElementById('pipeStatus').textContent = '蓝帽正在编排审议流程…';
+    const planRes = await blueHatPlan(topic, myToken);
+    lampState('blue-open', 'done');
+    record.essence = planRes.essence;
+
+    // 依据蓝帽规划重建灯阵
+    const order = planRes.plan.map(function (p) { return p.hat; });
+    buildLamps(order);
+    lampState('blue-open', 'done');
+
+    /* ② 逐顶帽子串行推进（关键：串行，规避并发上限） */
+    let contextText = '';
+    for (let i = 0; i < planRes.plan.length; i++) {
+      if (myToken !== RUN_TOKEN) throw new Error('CANCELLED');
+      const p = planRes.plan[i];
+      const out = await runOneHat(p.hat, p.focus, topic, contextText, myToken);
+      record.outputs[p.hat] = out;
+      contextText += '\n【' + HATS[p.hat].name + '】\n' + out + '\n';
+    }
+
+    /* ③ 蓝帽收束合成 */
+    if (myToken !== RUN_TOKEN) throw new Error('CANCELLED');
+    const synthesis = await blueHatSynthesize(topic, planRes.essence, record.outputs, myToken);
+    record.synthesis = synthesis;
+
+    /* ④ 留档 + 导出按钮 */
+    await saveRecord(record);
+    LAST_RECORD = record;
+    appendExportButtons(record);
+
+    document.getElementById('pipeStatus').textContent = '✅ 六帽推演完成';
+    stopTimer();
+    if (isCherry && window.cherry.notification) {
+      try { await window.cherry.notification.show({ title: '六帽推演完成', body: topic.slice(0, 40) }); } catch (e) {}
+    }
+
+  } catch (err) {
+    stopTimer();
+    if (err.message === 'CANCELLED') {
+      document.getElementById('pipeStatus').textContent = '⏹ 推演已终止';
+      toast('推演已终止');
+    } else if (err.message === 'NO_MODEL') {
+      document.getElementById('pipeStatus').textContent = '⚠️ 未检测到可用模型';
+      toast('Cherry 中尚未配置默认模型，请先在设置里配置', 4200);
+    } else {
+      document.getElementById('pipeStatus').textContent = '⚠️ ' + err.message;
+      toast('推演中断：' + err.message, 4000);
+    }
+  } finally {
+    document.getElementById('runBtn').disabled = false;
+    document.getElementById('runBtnText').textContent = '重新推演';
+    document.getElementById('cancelBtn').style.display = 'none';
+  }
+}
+
+/* ---------- 14. 留档与导出 ---------- */
+async function saveRecord(rec) {
+  try {
+    let list = (await store.get('history')) || [];
+    list.unshift(rec);
+    if (list.length > 30) list = list.slice(0, 30);
+    await store.set('history', list);
+    renderHistory(list);
+  } catch (e) { console.warn('留档失败', e); }
+}
+
+function buildMarkdown(rec) {
+  let md = '# 六帽推演报告\n\n**议题：** ' + rec.topic + '\n\n**时间：** ' + rec.time + '\n\n';
+  if (rec.essence) md += '**议题本质：** ' + rec.essence + '\n\n';
+  md += '---\n\n';
+  const order = ['white', 'green', 'yellow', 'black', 'red'];
+  order.forEach(function (k) {
+    if (rec.outputs[k]) md += '## ' + HATS[k].icon + ' ' + HATS[k].name + ' · ' + HATS[k].role + '\n\n' + rec.outputs[k] + '\n\n';
+  });
+  if (rec.synthesis) md += '---\n\n# ' + HATS.blue.icon + ' 蓝帽审议结论\n\n' + rec.synthesis + '\n';
+  return md;
+}
+
+function appendExportButtons(rec) {
+  const wrap = document.getElementById('results');
+  const bar = document.createElement('div');
+  bar.className = 'btn-row';
+  bar.style.marginTop = '8px';
+  bar.innerHTML =
+    '<button class="btn-ghost btn-sm" id="expMd">📄 导出 Markdown</button>' +
+    '<button class="btn-ghost btn-sm" id="expCopy">📋 复制全文</button>' +
+    '<button class="btn-ghost btn-sm" id="expJson">🧩 导出 JSON</button>';
+  wrap.appendChild(bar);
+
+  bar.querySelector('#expMd').onclick = async function () {
+    const md = buildMarkdown(rec);
+    if (isCherry && window.cherry.clipboard) { try { await window.cherry.clipboard.writeText(md); } catch (e) {} }
+    const a = document.createElement('a');
+    a.href = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(md);
+    a.download = '六帽推演_' + rec.topic.slice(0, 16).replace(/[\\/:*?"<>|]/g, '') + '.md';
+    a.click();
+    toast('Markdown 已导出');
+  };
+  bar.querySelector('#expCopy').onclick = async function () {
+    const md = buildMarkdown(rec);
+    try {
+      if (isCherry && window.cherry.clipboard) await window.cherry.clipboard.writeText(md);
+      else await navigator.clipboard.writeText(md);
+      toast('已复制到剪贴板');
+    } catch (e) { toast('复制失败，请手动选择文本'); }
+  };
+  bar.querySelector('#expJson').onclick = function () {
+    const blob = new Blob([JSON.stringify(rec, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '六帽推演.json';
+    a.click();
+    toast('JSON 已导出');
+  };
+}
+
+function renderHistory(list) {
+  const sec = document.getElementById('historySection');
+  const box = document.getElementById('historyList');
+  if (!list || !list.length) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  box.innerHTML = '';
+  list.forEach(function (r, i) {
+    const el = document.createElement('div');
+    el.className = 'history-item';
+    el.innerHTML = '<span class="history-topic">' + esc(r.topic) + '</span>' +
+                   '<span class="history-time">' + (r.time || '').slice(0, 16).replace('T', ' ') + '</span>';
+    el.onclick = function () { loadRecord(r); };
+    box.appendChild(el);
+  });
+}
+
+function loadRecord(rec) {
+  document.getElementById('results').innerHTML = '';
+  document.getElementById('pipeline').classList.remove('show');
+  document.getElementById('topicInput').value = rec.topic;
+
+  if (rec.essence) {
+    const c = createHatCard('blue', { id: 'h-open', title: '蓝帽 · 议题本质', role: '来自历史档案' });
+    setCardBody(c, '<p>' + esc(rec.essence) + '</p>', false);
+  }
+  const order = ['white', 'green', 'yellow', 'black', 'red'];
+  order.forEach(function (k) {
+    if (!rec.outputs || !rec.outputs[k]) return;
+    const c = createHatCard(k, {});
+    setCardBody(c, renderMD(rec.outputs[k]), false);
+  });
+  if (rec.synthesis) {
+    const c = createHatCard('blue', { id: 'h-close', synthesis: true, title: '蓝帽 · 审议结论', role: '综合全场' });
+    setCardBody(c, renderMD(rec.synthesis), false);
+  }
+  appendExportButtons(rec);
+  window.scrollTo({ top: document.getElementById('results').offsetTop - 90, behavior: 'smooth' });
+  toast('已载入历史档案');
+}
+
+/* ---------- 15. 初始化 ---------- */
+const TEMPLATES = [
+  { t: '要不要上这个项目？', v: '我们团队要不要接下这个为期三个月的新项目？' },
+  { t: '技术选型决策', v: '我们的新系统应该选择自研还是采购成熟的商业方案？' },
+  { t: '产品功能取舍', v: '这个新功能要不要在这个版本上线？' },
+  { t: '组织调整', v: '是否应该把现在的职能型团队改组为项目制小组？' },
+  { t: '个人重大选择', v: '我是否应该接受这个跨城市的工作机会？' },
+  { t: '政策落地', v: '公司是否应该推行全员远程办公制度？' }
+];
+
+function init() {
+  const badge = document.getElementById('envBadge');
+  if (isCherry) {
+    badge.textContent = '已连接 Cherry 宿主';
+    badge.style.color = 'var(--success)';
+    badge.style.borderColor = 'rgba(16,185,129,0.4)';
+    if (window.cherry.app && window.cherry.app.getInfo) {
+      window.cherry.app.getInfo().then(function (info) {
+        badge.textContent = 'Cherry v' + (info.hostVersion || '?');
+      }).catch(function () {});
+    }
+  } else {
+    badge.textContent = '离线仿真轨 · 需 Cherry 运行';
+    badge.style.color = 'var(--warning)';
+    badge.style.borderColor = 'rgba(245,158,11,0.4)';
+  }
+
+  const chips = document.getElementById('templateChips');
+  TEMPLATES.forEach(function (tp) {
+    const el = document.createElement('span');
+    el.className = 'chip';
+    el.textContent = tp.t;
+    el.onclick = function () { document.getElementById('topicInput').value = tp.v; };
+    chips.appendChild(el);
+  });
+
+  document.getElementById('runBtn').onclick = runCouncil;
+  document.getElementById('cancelBtn').onclick = function () {
+    RUN_TOKEN++;
+    if (isCherry && window.cherry.ai && window.cherry.ai.cancel) {
+      ['blue-plan', 'white', 'green', 'yellow', 'black', 'red', 'blue-close']
+        .forEach(function (id) { try { window.cherry.ai.cancel('hat-' + id); } catch (e) {} });
+    }
+  };
+
+  document.getElementById('results').innerHTML =
+    '<div class="empty"><div class="empty-icon">🎩</div>' +
+    '输入一个议题，六顶帽子会依次登台，从事实、创意、价值、风险、直觉五个角度把它看透，<br>最后由蓝帽收束成一份可执行的决策建议。</div>';
+
+  store.get('history').then(function (list) { if (list) renderHistory(list); });
+}
+
+init();
+</script>
+</body>
+</html>

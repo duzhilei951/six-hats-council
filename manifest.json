@@ -1,0 +1,32 @@
+{
+  "id": "com.zhilei.six-hats-council",
+  "name": {
+    "zh": "六帽推演厅",
+    "en": "Six Hats Council"
+  },
+  "version": "1.0.0",
+  "description": {
+    "zh": "基于爱德华·德波诺「六顶思考帽」平行思考法的决策推演工作台。输入任一议题，蓝帽先行编排流程，白/绿/黄/黑/红五顶帽子依次登台，从事实、创意、价值、风险、直觉五个维度递进审议，最后由蓝帽收束为一份含决策建议的完整报告。全程串行推进、本地留档、可导出 Markdown。",
+    "en": "A decision workbench built on Edward de Bono's Six Thinking Hats. One topic goes through Blue-hat planning, then White/Green/Yellow/Black/Red hats deliberate in sequence, and Blue synthesizes a final decision report."
+  },
+  "entry": "index.html",
+  "icon": {
+    "path": "icon.png",
+    "sha256": "e84d06c1ecb590b847b85bff95656224f03ac45a722bbd715cd7c8a05f3c925a"
+  },
+  "permissions": [
+    "ai.chat",
+    "storage.*",
+    "clipboard.write",
+    "notification.show"
+  ],
+  "update": {
+    "url": "https://duzhilei951.github.io/six-hats-council/manifest.json"
+  },
+  "package": {
+    "url": "https://duzhilei951.github.io/six-hats-council/releases/1.0.0/six-hats-council.miniapp",
+    "iconUrl": "https://duzhilei951.github.io/six-hats-council/icon.png",
+    "sha256": "9ba40bdc0d8524be526539453b2c1186c9784aecf31fe463a4f623cca571540a",
+    "size": 85977
+  }
+}
