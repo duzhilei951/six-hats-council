@@ -252,6 +252,159 @@ button:disabled { opacity: 0.42; cursor: not-allowed; }
   .navbar { padding: 10px 16px; }
   .container { padding: 0 14px 80px; }
 }
+
+/* ===== Markdown 增强：多级标题 / 表格 / 引用 / 链接 / 删除线 / 任务清单 ===== */
+.hat-card-body h1 { font-size: 15px; color: var(--hat-color, #fff); margin: 14px 0 7px; font-weight: 700; }
+.hat-card-body h2 { font-size: 14.5px; color: var(--hat-color, #fff); margin: 13px 0 7px; font-weight: 700; }
+.hat-card-body h3 { font-size: 14px; color: var(--hat-color, #fff); margin: 13px 0 7px; font-weight: 700; }
+.hat-card-body h1:first-child, .hat-card-body h2:first-child,
+.hat-card-body h3:first-child, .hat-card-body h4:first-child { margin-top: 0; }
+
+.hat-card-body ul ul, .hat-card-body ol ol,
+.hat-card-body ul ol, .hat-card-body ol ul { margin: 4px 0 4px 16px; }
+
+.hat-card-body blockquote {
+  margin: 9px 0; padding: 7px 13px;
+  border-left: 3px solid var(--hat-color, #6366f1);
+  background: rgba(255,255,255,0.04);
+  border-radius: 0 8px 8px 0;
+  color: var(--text-sub); font-style: italic;
+}
+
+.hat-card-body pre {
+  background: rgba(0,0,0,0.45); border: 1px solid var(--border);
+  border-radius: 9px; padding: 11px 13px; overflow-x: auto; margin: 10px 0;
+}
+.hat-card-body pre code {
+  background: none; border: none; padding: 0; color: #cbd5e1;
+  font-size: 12.5px; line-height: 1.6;
+}
+
+.md-table-wrap {
+  overflow-x: auto; margin: 11px 0; border-radius: 9px;
+  border: 1px solid var(--border); background: rgba(0,0,0,0.22);
+}
+.md-table { width: 100%; border-collapse: collapse; font-size: 12.6px; text-align: left; }
+.md-table th {
+  background: rgba(255,255,255,0.05); padding: 8px 12px;
+  border-bottom: 1px solid var(--border-strong); color: var(--hat-color, #a5b4fc);
+  font-weight: 700; white-space: nowrap;
+}
+.md-table td {
+  padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: var(--text-main); line-height: 1.6; vertical-align: top;
+}
+.md-table tr:last-child td { border-bottom: none; }
+.md-table tbody tr:hover td { background: rgba(99,102,241,0.08); }
+
+.md-link { color: #67e8f9; text-decoration: none; border-bottom: 1px dashed rgba(103,232,249,0.5); }
+.md-link:hover { color: #a5f3fc; border-bottom-color: #a5f3fc; }
+.md-del { color: var(--text-sub); text-decoration: line-through; }
+.md-check { color: var(--success); font-weight: 700; margin-right: 4px; }
+
+/* =====================================================================
+   穿透追问 · 深度研讨室
+   ===================================================================== */
+.inquiry-section {
+  margin-top: 26px; border-radius: 15px; overflow: hidden;
+  background: var(--bg-card); border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-card);
+}
+.inquiry-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  flex-wrap: wrap; padding: 14px 18px;
+  border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02);
+}
+.inquiry-title { display: flex; align-items: center; gap: 9px; font-size: 14.5px; font-weight: 700; }
+.inquiry-title .dot-live {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--success); box-shadow: 0 0 8px var(--success);
+}
+.inquiry-tag {
+  font-size: 11px; padding: 2px 8px; border-radius: 5px; font-weight: 400;
+  background: rgba(99,102,241,0.16); color: #a5b4fc; border: 1px solid rgba(129,140,248,0.35);
+}
+.inquiry-body { padding: 18px; }
+
+.inquiry-chat {
+  display: flex; flex-direction: column; gap: 14px;
+  max-height: 460px; overflow-y: auto; padding-right: 6px; margin-bottom: 16px;
+}
+.inquiry-chat::-webkit-scrollbar { width: 5px; }
+.inquiry-chat::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+
+.inquiry-msg { display: flex; flex-direction: column; gap: 6px; }
+.inquiry-msg.user { align-self: flex-end; max-width: 86%; }
+.inquiry-msg.assistant { align-self: flex-start; width: 100%; }
+.inquiry-bubble {
+  padding: 12px 16px; border-radius: 11px;
+  font-size: 13.6px; line-height: 1.7;
+}
+.inquiry-msg.user .inquiry-bubble {
+  background: rgba(99,102,241,0.17); border: 1px solid rgba(129,140,248,0.4);
+  color: var(--text-main); border-top-right-radius: 2px;
+}
+.inquiry-msg.assistant .inquiry-bubble {
+  background: rgba(0,0,0,0.26); border: 1px solid var(--border);
+  border-top-left-radius: 2px;
+}
+.inquiry-who { font-size: 11.5px; font-weight: 700; color: var(--text-sub); margin-bottom: 6px; }
+
+.inquiry-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 13px; }
+.inquiry-chip {
+  font-size: 12px; padding: 5px 12px; border-radius: 20px; cursor: pointer;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  color: var(--text-sub); user-select: none; transition: all 0.18s;
+}
+.inquiry-chip:hover {
+  background: rgba(99,102,241,0.14); border-color: rgba(129,140,248,0.45);
+  color: #c7d2fe; transform: translateY(-1px);
+}
+
+.inquiry-input-row {
+  display: flex; gap: 10px; padding: 8px 12px; border-radius: 11px;
+  background: rgba(0,0,0,0.28); border: 1px solid var(--border);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.inquiry-input-row:focus-within {
+  border-color: var(--primary); box-shadow: 0 0 0 2px rgba(99,102,241,0.16);
+}
+#inquiryInput {
+  flex: 1; background: transparent; border: none; outline: none; resize: none;
+  color: var(--text-main); font-family: inherit; font-size: 13.6px; line-height: 1.5;
+  min-height: 44px; max-height: 150px; padding: 11px 0; box-sizing: border-box;
+}
+#inquiryInput::placeholder { color: var(--text-sub); opacity: 0.8; }
+#inquirySend {
+  align-self: flex-end; flex-shrink: 0; white-space: nowrap;
+  padding: 11px 22px; border: none; border-radius: 11px; cursor: pointer;
+  font-size: 13.6px; font-weight: 700; letter-spacing: 0.04em; color: #fff;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  box-shadow: 0 4px 16px rgba(99,102,241,0.42);
+  display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+}
+#inquirySend:hover:not(:disabled) { transform: translateY(-1px) scale(1.03); box-shadow: 0 7px 22px rgba(99,102,241,0.6); }
+#inquirySend:active:not(:disabled) { transform: scale(0.96); }
+#inquirySend:disabled { opacity: 0.55; cursor: not-allowed; filter: grayscale(0.35); box-shadow: none; transform: none; }
+
+.inquiry-hint { margin-top: 8px; font-size: 11.5px; color: var(--text-sub); text-align: right; user-select: none; }
+.inquiry-hint kbd {
+  display: inline-block; padding: 1px 6px; margin: 0 2px; border-radius: 4px;
+  font-family: ui-monospace, Consolas, monospace; font-size: 10.5px;
+  color: #a5b4fc; background: rgba(99,102,241,0.16); border: 1px solid rgba(129,140,248,0.32);
+}
+.inquiry-empty { text-align: center; color: var(--text-sub); font-size: 12.5px; padding: 18px 0; }
+.inquiry-typing { display: inline-flex; gap: 4px; padding: 4px 2px; }
+.inquiry-typing i {
+  width: 5px; height: 5px; border-radius: 50%; background: #818cf8;
+  animation: inqType 1.2s infinite ease-in-out;
+}
+.inquiry-typing i:nth-child(2) { animation-delay: 0.2s; }
+.inquiry-typing i:nth-child(3) { animation-delay: 0.4s; }
+@keyframes inqType {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1.1); opacity: 1; }
+}
 </style>
 </head>
 <body>
@@ -296,6 +449,37 @@ button:disabled { opacity: 0.42; cursor: not-allowed; }
 
   <!-- 结果区 -->
   <div class="results" id="results"></div>
+
+  <!-- 穿透追问 · 深度研讨室 -->
+  <div class="inquiry-section" id="inquirySection" style="display:none;">
+    <div class="inquiry-head">
+      <div class="inquiry-title">
+        <span class="dot-live"></span>
+        <span>💬 穿透追问 · 深度研讨室</span>
+        <span class="inquiry-tag">已锚定本场六帽推演</span>
+      </div>
+      <button class="btn-ghost btn-sm" id="inquiryClear" style="padding:4px 10px;font-size:12px;" title="清空当前追问记录">🧹 清空追问</button>
+    </div>
+    <div class="inquiry-body">
+      <div class="inquiry-chips" id="inquiryChips">
+        <div class="inquiry-chip" data-q="既然各顶帽子都发过言了，如果只能执行一条建议，你建议是哪一条？为什么它优先级最高？">🎯 只执行一条，选哪条？</div>
+        <div class="inquiry-chip" data-q="黑帽提出的风险和黄帽提出的机会之间存在张力，我该如何权衡取舍？请给出具体的判断标准。">⚖️ 风险与机会如何权衡？</div>
+        <div class="inquiry-chip" data-q="绿帽给的替代方案里，哪一个最值得先做小规模验证？请给出验证设计与成功判据。">🧪 哪个方案先做验证？</div>
+        <div class="inquiry-chip" data-q="这场推演最可能在哪里出错？哪个环节的假设最脆弱？我该提前布防什么？">🛡️ 推演最可能错在哪？</div>
+      </div>
+      <div class="inquiry-chat" id="inquiryChat">
+        <div class="inquiry-empty">💬 尚无追问记录。点击上方快捷问题，或在下方输入框中围绕本次六帽推演继续深度追问。</div>
+      </div>
+      <div class="inquiry-input-row">
+        <textarea id="inquiryInput" rows="1" placeholder="围绕本次六帽推演继续向 AI 追问..."></textarea>
+        <button id="inquirySend">
+          <span>发送追问</span>
+          <span>↵</span>
+        </button>
+      </div>
+      <div class="inquiry-hint">按 <kbd>Enter</kbd> 直接提交发送 · <kbd>Shift</kbd> + <kbd>Enter</kbd> 换行</div>
+    </div>
+  </div>
 
   <!-- 历史记录 -->
   <div id="historySection" style="display:none;">
@@ -372,29 +556,217 @@ function safeParseJSON(raw, fallback) {
   return fallback;
 }
 
-/* ---------- 5. 轻量 Markdown 渲染 ---------- */
+/* ---------- 5. 完整版 Markdown 渲染引擎 ----------
+   支持：代码块 / 表格 / 1~6 级标题 / 分隔线 / 引用 / 有序无序及嵌套列表 /
+        任务清单 / 加粗斜体删除线 / 行内代码 / 超链接
+   架构：哨兵占位符保护代码 → 行级状态机解析块级 → 还原代码块
+   ------------------------------------------------------------ */
 function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
+
+/* 哨兵字符取自 Unicode 私有使用区，正常文本几乎不可能出现，
+   用 fromCharCode 构造可彻底避免源码里写入不可见控制字符。 */
+var MD_SENT = String.fromCharCode(0xE000);
+var MD_SENT_RE = new RegExp(MD_SENT + '(\\d+)' + MD_SENT, 'g');
+
+/* 行内元素渲染（入参必须已 HTML 转义） */
+function renderInline(escapedText) {
+  if (escapedText === null || escapedText === undefined) return '';
+  var s = String(escapedText);
+  var codes = [];
+
+  // 先用哨兵保护行内代码，防止其中的 * _ 被误判为强调符号
+  s = s.replace(/`([^`]+)`/g, function (m, c) {
+    codes.push(c);
+    return MD_SENT + (codes.length - 1) + MD_SENT;
+  });
+
+  // 超链接 [文本](地址)
+  s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,
+    '<a class="md-link" href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
+  // 加粗
+  s = s.replace(/\*\*([\s\S]+?)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/__([\s\S]+?)__/g, '<strong>$1</strong>');
+
+  // 删除线
+  s = s.replace(/~~([\s\S]+?)~~/g, '<del class="md-del">$1</del>');
+
+  // 斜体（避免误伤 ** 与 snake_case）
+  s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+  s = s.replace(/(^|[^_\w])_([^_\n]+)_/g, '$1<em>$2</em>');
+
+  // 还原行内代码
+  s = s.replace(MD_SENT_RE, function (m, n) {
+    return '<code>' + (codes[Number(n)] || '') + '</code>';
+  });
+  return s;
+}
+
+/* 拆分表格行：去掉首尾竖线后按 | 切分 */
+function splitTableRow(row) {
+  return row.replace(/^\s*\|/, '').replace(/\|\s*$/, '').split('|');
+}
+
 function renderMD(text) {
-  if (!text) return '';
-  let t = esc(text);
-  t = t.replace(/^###\s+(.*)$/gm, '<h4>$1</h4>');
-  t = t.replace(/^##\s+(.*)$/gm, '<h4>$1</h4>');
-  t = t.replace(/^#\s+(.*)$/gm, '<h4>$1</h4>');
-  t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
-  t = t.replace(/^\s*[-*]\s+(.*)$/gm, '<li>$1</li>');
-  t = t.replace(/^\s*\d+\.\s+(.*)$/gm, '<li>$1</li>');
-  t = t.replace(/(<li>[\s\S]*?<\/li>)(?!\s*<li>)/g, '<ul>$1</ul>');
-  t = t.replace(/^---+\s*$/gm, '<hr>');
-  t = t.split(/\n{2,}/).map(function (blk) {
-    blk = blk.trim();
-    if (!blk) return '';
-    if (/^<(h4|ul|hr|li)/.test(blk)) return blk;
-    return '<p>' + blk.replace(/\n/g, '<br>') + '</p>';
-  }).join('');
-  return t;
+  if (text === null || text === undefined || text === '') return '';
+  var src = String(text).replace(/\r\n?/g, '\n');
+  if (!src.trim()) return '';
+
+  /* ---- 1) 抽出围栏代码块，用哨兵占位，避免逐行解析破坏其内容 ---- */
+  var codeStore = [];
+  function stash(html) {
+    codeStore.push(html);
+    return MD_SENT + (codeStore.length - 1) + MD_SENT;
+  }
+  // 已闭合的代码块
+  src = src.replace(/```[ \t]*[a-zA-Z0-9#+\-]*[ \t]*\n([\s\S]*?)```/g, function (m, code) {
+    return stash('<pre><code>' + esc(code.replace(/\n$/, '')) + '</code></pre>');
+  });
+  // 流式输出中尚未闭合的代码块
+  src = src.replace(/```[ \t]*[a-zA-Z0-9#+\-]*[ \t]*\n?([\s\S]*)$/, function (m, code) {
+    return stash('<pre><code>' + esc(code) + '</code></pre>');
+  });
+
+  var lines = src.split('\n');
+  var out = [];
+  var listStack = [];   // 列表层级栈 [{type:'ul'|'ol', indent:N}]
+  var i = 0;
+
+  // 惰性闭合：<li> 保持打开，直到同级下一项或退出层级时才补 </li>，
+  // 使嵌套子列表正确落在父 <li> 内部，生成合法 HTML。
+  function closeAllLists() {
+    while (listStack.length) {
+      out.push('</li>');
+      out.push(listStack.pop().type === 'ol' ? '</ol>' : '</ul>');
+    }
+  }
+
+  while (i < lines.length) {
+    var rawLine = lines[i];
+    var line = rawLine.replace(/\s+$/, '');
+    var trimmed = line.trim();
+
+    // 空行
+    if (!trimmed) { closeAllLists(); i++; continue; }
+
+    // 代码块占位符
+    if (new RegExp('^' + MD_SENT + '\\d+' + MD_SENT + '$').test(trimmed)) {
+      closeAllLists(); out.push(trimmed); i++; continue;
+    }
+
+    // 分隔线 --- *** ___
+    if (/^([-*_])\s*\1\s*\1[\s\-*_]*$/.test(trimmed)) {
+      closeAllLists(); out.push('<hr>'); i++; continue;
+    }
+
+    // 标题 # ~ ######
+    var hMatch = trimmed.match(/^(#{1,6})\s+(.*?)\s*#*$/);
+    if (hMatch) {
+      closeAllLists();
+      var lv = hMatch[1].length;
+      var tag = lv >= 4 ? 'h4' : ('h' + lv);   // h5/h6 视觉上收敛到 h4 层级
+      out.push('<' + tag + '>' + renderInline(esc(hMatch[2])) + '</' + tag + '>');
+      i++; continue;
+    }
+
+    // 表格：当前行含 |，且下一行是分隔行
+    if (trimmed.indexOf('|') !== -1 && (i + 1) < lines.length &&
+        /^\s*\|?[\s:|\-]+\|[\s:|\-]*$/.test(lines[i + 1]) && /\-/.test(lines[i + 1])) {
+      closeAllLists();
+      var headers = splitTableRow(trimmed);
+      var aligns = splitTableRow(lines[i + 1]).map(function (c) {
+        var t = c.trim();
+        var left = t.charAt(0) === ':';
+        var right = t.charAt(t.length - 1) === ':';
+        return (left && right) ? 'center' : (right ? 'right' : (left ? 'left' : ''));
+      });
+      i += 2;
+      var bodyRows = [];
+      while (i < lines.length && lines[i].trim() && lines[i].indexOf('|') !== -1) {
+        bodyRows.push(splitTableRow(lines[i].trim()));
+        i++;
+      }
+      var tbl = '<div class="md-table-wrap"><table class="md-table"><thead><tr>';
+      headers.forEach(function (c, ci) {
+        tbl += '<th' + (aligns[ci] ? ' style="text-align:' + aligns[ci] + '"' : '') + '>' +
+               renderInline(esc(c.trim())) + '</th>';
+      });
+      tbl += '</tr></thead><tbody>';
+      bodyRows.forEach(function (r) {
+        tbl += '<tr>';
+        for (var ci = 0; ci < headers.length; ci++) {
+          tbl += '<td' + (aligns[ci] ? ' style="text-align:' + aligns[ci] + '"' : '') + '>' +
+                 renderInline(esc((r[ci] || '').trim())) + '</td>';
+        }
+        tbl += '</tr>';
+      });
+      tbl += '</tbody></table></div>';
+      out.push(tbl);
+      continue;
+    }
+
+    // 引用块 > （连续多行合并为同一引用块）
+    if (/^>\s?/.test(trimmed)) {
+      closeAllLists();
+      var quoted = [];
+      while (i < lines.length && /^\s*>\s?/.test(lines[i])) {
+        quoted.push(lines[i].replace(/^\s*>\s?/, ''));
+        i++;
+      }
+      out.push('<blockquote>' +
+               renderInline(esc(quoted.join('\n'))).replace(/\n/g, '<br>') +
+               '</blockquote>');
+      continue;
+    }
+
+    // 列表（支持缩进嵌套、有序无序混排、任务清单）
+    var liMatch = rawLine.match(/^(\s*)([-+*]|\d+[.)])\s+(.*)$/);
+    if (liMatch) {
+      var indent = liMatch[1].replace(/\t/g, '    ').length;
+      var type = /^\d/.test(liMatch[2]) ? 'ol' : 'ul';
+
+      while (listStack.length && listStack[listStack.length - 1].indent > indent) {
+        out.push('</li>');
+        out.push(listStack.pop().type === 'ol' ? '</ol>' : '</ul>');
+      }
+      if (listStack.length && listStack[listStack.length - 1].indent === indent &&
+          listStack[listStack.length - 1].type !== type) {
+        out.push('</li>');
+        out.push(listStack.pop().type === 'ol' ? '</ol>' : '</ul>');
+      }
+      if (listStack.length && listStack[listStack.length - 1].indent === indent) {
+        out.push('</li>');
+      }
+      if (!listStack.length || listStack[listStack.length - 1].indent < indent) {
+        listStack.push({ type: type, indent: indent });
+        out.push(type === 'ol' ? '<ol>' : '<ul>');
+      }
+
+      var content = liMatch[3];
+      var checkbox = '';
+      var cbMatch = content.match(/^\[([ xX])\]\s*(.*)$/);
+      if (cbMatch) {
+        checkbox = '<span class="md-check">' + (/[xX]/.test(cbMatch[1]) ? '☑' : '☐') + '</span> ';
+        content = cbMatch[2];
+      }
+      out.push('<li>' + checkbox + renderInline(esc(content)));
+      i++; continue;
+    }
+
+    // 普通段落
+    closeAllLists();
+    out.push('<p>' + renderInline(esc(line)) + '</p>');
+    i++;
+  }
+
+  closeAllLists();
+
+  /* ---- 2) 还原代码块 ---- */
+  return out.join('').replace(MD_SENT_RE, function (m, n) {
+    return codeStore[Number(n)] || '';
+  });
 }
 
 /* ---------- 6. 计时器 ---------- */
@@ -508,6 +880,44 @@ async function callAI(systemPrompt, userPrompt, callId, onDelta, runToken) {
         ],
         model: 'default' },
       { onChunk: function (t) { acc += t; onDelta(acc); }, callId: callId }
+    );
+  } catch (e) {
+    if (e && e.name === 'Cancelled') throw new Error('CANCELLED');
+    if (e && e.name === 'PermissionDenied') throw new Error('权限不足：请确认已授权 ai.chat');
+    if (e && e.name === 'RateLimited') throw new Error('调用过于频繁，请稍候重试');
+    if (e && e.name === 'Unavailable') throw new Error('模型暂不可用，请检查 Cherry 中的模型配置');
+    throw new Error((e && e.message) || '调用失败');
+  }
+  return acc;
+}
+
+/* ---------- 9b. 多轮对话调用（供「穿透追问 · 深度研讨室」使用） ---------- */
+async function callAIMessages(messages, onDelta) {
+  if (!isCherry || !window.cherry.ai) {
+    // 离线仿真轨：输出一段结构化 Markdown，便于本地预览排版
+    const fake = '### 🧭 蓝帽研判\n\n**核心结论**：先明确决策的不可逆成本，再谈收益。\n\n' +
+      '#### 一、关键判断\n- **事实底座**：现有信息尚不足以支撑高置信结论\n- **主要张力**：黄帽的机会与黑帽的风险指向相反\n\n' +
+      '#### 二、方案对照\n\n| 方案 | 优势 | 风险 | 建议 |\n|:---|:---|:---|---:|\n| 立即推进 | 抢占窗口 | 不可逆投入 | 暂缓 |\n| 小步验证 | 成本可控 | 见效较慢 | **推荐** |\n\n' +
+      '#### 三、行动清单\n- [x] 列出不可逆成本清单\n- [ ] 设计两周验证闭环\n\n' +
+      '> **蓝帽提示**：不要用战术上的勤奋，掩盖战略上的懒惰。\n\n' +
+      '*（当前为离线仿真轨，接入 Cherry Studio 后将给出真实推演。）*';
+    let acc = '';
+    for (let i = 0; i < fake.length; i++) {
+      acc += fake[i];
+      onDelta(acc);
+      await new Promise(function (r) { setTimeout(r, 6); });
+    }
+    return acc;
+  }
+
+  const caps = await window.cherry.ai.getCapabilities({ model: 'default' });
+  if (!caps || caps.available === false) throw new Error('NO_MODEL');
+
+  let acc = '';
+  try {
+    await window.cherry.ai.chat(
+      { messages: messages, model: 'default' },
+      { onChunk: function (t) { acc += t; onDelta(acc); }, callId: 'inquiry' }
     );
   } catch (e) {
     if (e && e.name === 'Cancelled') throw new Error('CANCELLED');
@@ -658,6 +1068,7 @@ async function runCouncil() {
 
   // UI 复位
   document.getElementById('results').innerHTML = '';
+  document.getElementById('inquirySection').style.display = 'none';  // 新一轮推演前收起追问室
   document.getElementById('runBtn').disabled = true;
   document.getElementById('runBtnText').innerHTML = '<span class="spinner"></span> 推演中…';
   document.getElementById('cancelBtn').style.display = 'inline-flex';
@@ -667,7 +1078,7 @@ async function runCouncil() {
   lampState('blue-close', null);
   startTimer();
 
-  const record = { topic: topic, time: new Date().toISOString(), essence: '', outputs: {}, synthesis: '' };
+  const record = { topic: topic, time: new Date().toISOString(), essence: '', outputs: {}, synthesis: '', inquiries: [] };
 
   try {
     /* ① 蓝帽开局 */
@@ -701,6 +1112,7 @@ async function runCouncil() {
     await saveRecord(record);
     LAST_RECORD = record;
     appendExportButtons(record);
+    showInquiryRoom();   // 推演完成，开放追问研讨室
 
     document.getElementById('pipeStatus').textContent = '✅ 六帽推演完成';
     stopTimer();
@@ -730,8 +1142,15 @@ async function runCouncil() {
 /* ---------- 14. 留档与导出 ---------- */
 async function saveRecord(rec) {
   try {
+    if (!rec || !rec.topic) return;
     let list = (await store.get('history')) || [];
-    list.unshift(rec);
+    // 同一场推演就地更新（追问记录随之落盘），避免产生重复档案
+    var idx = -1;
+    for (var i = 0; i < list.length; i++) {
+      if (list[i] && list[i].topic === rec.topic && list[i].time === rec.time) { idx = i; break; }
+    }
+    if (idx >= 0) list[idx] = rec;
+    else list.unshift(rec);
     if (list.length > 30) list = list.slice(0, 30);
     await store.set('history', list);
     renderHistory(list);
@@ -824,8 +1243,193 @@ function loadRecord(rec) {
     setCardBody(c, renderMD(rec.synthesis), false);
   }
   appendExportButtons(rec);
+
+  // 载入历史档案后，追问研讨室切换为该场推演的上下文
+  LAST_RECORD = rec;
+  showInquiryRoom();
+
   window.scrollTo({ top: document.getElementById('results').offsetTop - 90, behavior: 'smooth' });
   toast('已载入历史档案');
+}
+
+/* =====================================================================
+   14b. 穿透追问 · 深度研讨室
+   将「议题 + 六顶帽子全部产出 + 蓝帽收束结论」整体注入上下文，支持持续追问
+   ===================================================================== */
+var inquiryBusy = false;
+
+function buildInquirySystem(rec) {
+  if (!rec || !rec.topic) {
+    return '你是资深决策顾问，请用 Markdown 给出结构化、具体、可执行的回答。';
+  }
+  var p = [];
+  p.push('你是「六帽推演厅」的【蓝帽主持人】，刚刚主持完下面这场六顶思考帽审议。');
+  p.push('');
+  p.push('==================== 本场推演全景 ====================');
+  p.push('【待审议议题】');
+  p.push(String(rec.topic).trim());
+
+  if (rec.essence) {
+    p.push('');
+    p.push('【议题本质（蓝帽开局判定）】');
+    p.push(String(rec.essence).trim());
+  }
+
+  p.push('');
+  ['white', 'green', 'yellow', 'black', 'red'].forEach(function (k) {
+    var t = rec.outputs && rec.outputs[k];
+    if (!t) return;
+    p.push('──── ' + HATS[k].icon + ' ' + HATS[k].name + '（' + HATS[k].role + '）────');
+    p.push(String(t).trim());
+    p.push('');
+  });
+
+  if (rec.synthesis) {
+    p.push('──── 🧭 蓝帽审议结论（综合全场）────');
+    p.push(String(rec.synthesis).trim());
+    p.push('');
+  }
+
+  p.push('====================================================');
+  p.push('');
+  p.push('现在，用户将围绕上述议题与本场推演结论，向你展开持续的定向追问与深度研讨。');
+  p.push('');
+  p.push('【回复准则】');
+  p.push('1. 严格立足本场推演作答；援引某顶帽子时请点名（如「黑帽指出…」），不要泛泛而谈。');
+  p.push('2. 敢于给出明确判断与取舍，不要和稀泥、不要只罗列而不下结论。');
+  p.push('3. 使用 Markdown 排版（标题、列表，必要时用表格做方案对比），便于快速吸收。');
+  p.push('4. 直击要害，避免复述推演中已经讲过的内容。');
+  return p.join('\n');
+}
+
+function renderInquiryRoom() {
+  var box = document.getElementById('inquiryChat');
+  if (!box) return;
+  var rec = LAST_RECORD;
+  var items = (rec && Array.isArray(rec.inquiries)) ? rec.inquiries : [];
+
+  if (!items.length) {
+    box.innerHTML = '<div class="inquiry-empty">💬 尚无追问记录。点击上方快捷问题，或在下方输入框中围绕本次六帽推演继续深度追问。</div>';
+    return;
+  }
+
+  box.innerHTML = items.map(function (m) {
+    var isUser = m.role === 'user';
+    var who = isUser ? '👤 我的追问' : '🎩 六帽议事厅 · 蓝帽主持';
+    return '<div class="inquiry-msg ' + (isUser ? 'user' : 'assistant') + '">' +
+             '<div class="inquiry-bubble" style="--hat-color:#818cf8">' +
+               '<div class="inquiry-who">' + who + '</div>' +
+               '<div class="hat-card-body">' + renderMD(m.content) + '</div>' +
+             '</div>' +
+           '</div>';
+  }).join('');
+  box.scrollTop = box.scrollHeight;
+}
+
+function showInquiryRoom() {
+  var sec = document.getElementById('inquirySection');
+  if (sec) sec.style.display = 'block';
+  renderInquiryRoom();
+}
+
+async function sendInquiry(text) {
+  var q = (text || '').trim();
+  if (!q) return;
+
+  var rec = LAST_RECORD;
+  if (!rec || !rec.topic) { toast('请先完成一次六帽推演，再展开追问研讨'); return; }
+  if (inquiryBusy) return;
+
+  if (!Array.isArray(rec.inquiries)) rec.inquiries = [];
+  rec.inquiries.push({ role: 'user', content: q, time: Date.now() });
+  var assistantMsg = { role: 'assistant', content: '', time: Date.now() };
+  rec.inquiries.push(assistantMsg);
+
+  var inputEl = document.getElementById('inquiryInput');
+  if (inputEl) inputEl.value = '';
+  renderInquiryRoom();
+
+  var box = document.getElementById('inquiryChat');
+  var lastEl = box ? box.lastElementChild : null;
+  var bodyEl = lastEl ? lastEl.querySelector('.hat-card-body') : null;
+  if (bodyEl) bodyEl.innerHTML = '<span class="inquiry-typing"><i></i><i></i><i></i></span>';
+
+  var btn = document.getElementById('inquirySend');
+  if (btn) btn.disabled = true;
+  inquiryBusy = true;
+
+  // 组装多轮上下文：system(推演全景) + 最近 10 条有效历史
+  var messages = [{ role: 'system', content: buildInquirySystem(rec) }];
+  rec.inquiries.slice(0, -1).slice(-10).forEach(function (m) {
+    var c = (m && m.content) ? String(m.content).trim() : '';
+    if (!c) return;                        // 跳过空消息，避免部分模型接口报 400
+    messages.push({ role: m.role === 'user' ? 'user' : 'assistant', content: c });
+  });
+
+  try {
+    var full = await callAIMessages(messages, function (acc) {
+      assistantMsg.content = acc;
+      if (bodyEl) bodyEl.innerHTML = renderMD(acc);
+      if (box) box.scrollTop = box.scrollHeight;
+    });
+    if (!full) {
+      assistantMsg.content = '（本次未收到模型返回内容，请确认 Cherry Studio 已配置好默认模型后重试）';
+      if (bodyEl) bodyEl.innerHTML = renderMD(assistantMsg.content);
+    }
+  } catch (err) {
+    assistantMsg.content = '⚠️ 追问研讨遇到异常：' + ((err && err.message) ? err.message : String(err));
+    if (bodyEl) bodyEl.innerHTML = renderMD(assistantMsg.content);
+  } finally {
+    inquiryBusy = false;
+    if (btn) btn.disabled = false;
+    renderInquiryRoom();
+    try { await saveRecord(rec); } catch (e) { console.warn(e); }
+  }
+}
+
+function initInquiryRoom() {
+  var sendBtn = document.getElementById('inquirySend');
+  if (sendBtn) {
+    sendBtn.onclick = function () {
+      var el = document.getElementById('inquiryInput');
+      if (el) sendInquiry(el.value);
+    };
+  }
+
+  var input = document.getElementById('inquiryInput');
+  if (input) {
+    input.onkeydown = function (e) {
+      // isComposing：中文输入法拼音候选阶段按回车是「选字」，不能当作发送
+      if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
+        e.preventDefault();
+        sendInquiry(e.target.value);
+      }
+    };
+  }
+
+  var clearBtn = document.getElementById('inquiryClear');
+  if (clearBtn) {
+    clearBtn.onclick = async function () {
+      var rec = LAST_RECORD;
+      if (!rec || !Array.isArray(rec.inquiries) || !rec.inquiries.length) return;
+      rec.inquiries = [];
+      renderInquiryRoom();
+      try { await saveRecord(rec); } catch (e) { console.warn(e); }
+    };
+  }
+
+  var chips = document.getElementById('inquiryChips');
+  if (chips) {
+    Array.prototype.forEach.call(chips.querySelectorAll('.inquiry-chip'), function (chip) {
+      chip.onclick = function () {
+        var q = chip.getAttribute('data-q');
+        if (!q) return;
+        var el = document.getElementById('inquiryInput');
+        if (el) el.value = q;
+        sendInquiry(q);
+      };
+    });
+  }
 }
 
 /* ---------- 15. 初始化 ---------- */
@@ -865,6 +1469,7 @@ function init() {
   });
 
   document.getElementById('runBtn').onclick = runCouncil;
+  initInquiryRoom();
   document.getElementById('cancelBtn').onclick = function () {
     RUN_TOKEN++;
     if (isCherry && window.cherry.ai && window.cherry.ai.cancel) {

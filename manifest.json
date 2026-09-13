@@ -4,7 +4,7 @@
     "zh": "六帽推演厅",
     "en": "Six Hats Council"
   },
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": {
     "zh": "基于德波诺「六顶思考帽」的决策推演工作台。蓝帽编排，白绿黄黑红五帽递进审议，最后由蓝帽收束决策报告。全程串行、本地留档、可导出 Markdown。",
     "en": "Decision workbench based on Six Thinking Hats. Deliberate across facts, ideas, value, risks, and intuition, synthesized into a final decision report."
@@ -24,13 +24,13 @@
     "url": "https://duzhilei951.github.io/six-hats-council/manifest.json"
   },
   "package": {
-    "url": "https://duzhilei951.github.io/six-hats-council/releases/1.0.3/six-hats-council.miniapp",
+    "url": "https://duzhilei951.github.io/six-hats-council/releases/1.0.4/six-hats-council.miniapp",
     "iconUrl": "https://duzhilei951.github.io/six-hats-council/icon.png",
-    "sha256": "65176190ee35356e6c402c3157c635e179802c7ba1a09e73a4cc7f36a1e369e0",
-    "size": 43874
+    "sha256": "a70f7c9d7c797ce1bd40f2903dd1a2110d1c2eaa45bba8f85dfd6dd500a239ba",
+    "size": 51280
   },
   "releaseNotes": {
-    "zh": "修正英文描述超长导致 manifest 无法加载的问题（官方上限 200 字符）；同步强化打包与体检工具的规范校验。",
-    "en": "Fixed the English description exceeding the 200-character manifest limit that blocked loading. Hardened the packaging and validation tooling."
+    "zh": "v1.0.4: 新增【穿透追问·深度研讨室】，将议题与六顶帽子全部产出整体注入上下文，支持持续多轮追问并随档案持久化；同时重写 Markdown 渲染引擎，新增表格、1~6级标题、引用块、嵌套列表、任务清单、删除线与超链接支持。",
+    "en": "v1.0.4: Added a Follow-Up Deep Inquiry Room injecting the full six-hat deliberation as dialogue context for multi-turn follow-ups, plus a rebuilt Markdown engine (tables, H1-H6, quotes, nested lists, task lists, links)."
   }
 }
